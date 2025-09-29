@@ -5,12 +5,14 @@
 #include <stdint.h>
 #include <math.h>
 
+// ball struct -> pos, velocity, size
 typedef struct {
     float x, y;
     float vx, vy;
     int radius;
 } Ball;
 
+// draw circle -> using horizontal lines
 static void draw_filled_circle(SDL_Renderer *renderer, int cx, int cy, int r) {
     for (int dy = -r; dy <= r; ++dy) {
         int dx = (int)floorf(sqrtf((float)(r * r - dy * dy)));
@@ -22,6 +24,7 @@ static void draw_filled_circle(SDL_Renderer *renderer, int cx, int cy, int r) {
 int main(int argc, char *argv[]) {
     (void)argc; (void)argv;
 
+    // init SDL
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         fprintf(stderr, "SDL_Init error: %s\n", SDL_GetError());
         return 1;
@@ -30,6 +33,7 @@ int main(int argc, char *argv[]) {
     const int WIN_W = 800;
     const int WIN_H = 600;
 
+    // window + renderer
     SDL_Window *win = SDL_CreateWindow("SDL3 Ball Bounce", WIN_W, WIN_H, 0);
     if (!win) {
         fprintf(stderr, "SDL_CreateWindow error: %s\n", SDL_GetError());
@@ -45,6 +49,7 @@ int main(int argc, char *argv[]) {
         return 3;
     }
 
+    // setup ball
     Ball ball = {
         .x = WIN_W * 0.25f,
         .y = WIN_H * 0.25f,
@@ -57,7 +62,9 @@ int main(int argc, char *argv[]) {
     bool running = true;
     SDL_Event event;
 
+    // main loop
     while (running) {
+        // input
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_EVENT_QUIT) running = false;
             if (event.type == SDL_EVENT_KEY_DOWN) {
@@ -65,14 +72,17 @@ int main(int argc, char *argv[]) {
             }
         }
 
+        // time step
         Uint64 now = SDL_GetTicks();
         float dt = (now - last_ticks) / 1000.0f;
         if (dt > 0.05f) dt = 0.05f;
         last_ticks = now;
 
+        // move ball
         ball.x += ball.vx * dt;
         ball.y += ball.vy * dt;
 
+        // bounce walls
         if (ball.x - ball.radius <= 0) {
             ball.x = ball.radius;
             ball.vx = -ball.vx;
@@ -80,7 +90,6 @@ int main(int argc, char *argv[]) {
             ball.x = WIN_W - ball.radius;
             ball.vx = -ball.vx;
         }
-
         if (ball.y - ball.radius <= 0) {
             ball.y = ball.radius;
             ball.vy = -ball.vy;
@@ -89,6 +98,7 @@ int main(int argc, char *argv[]) {
             ball.vy = -ball.vy;
         }
 
+        // draw
         SDL_SetRenderDrawColor(renderer, 30, 30, 30, 255);
         SDL_RenderClear(renderer);
 
@@ -103,6 +113,7 @@ int main(int argc, char *argv[]) {
         SDL_Delay(1);
     }
 
+    // cleanup
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(win);
     SDL_Quit();
