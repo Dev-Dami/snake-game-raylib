@@ -1,0 +1,8 @@
+[
+  {
+    "directory": "C:/Users/Drakendgarp/Downloads/New folder/snake-game-raylib/build-mingw",
+    "command": "C:\\msys64\\mingw64\\bin\\gcc.exe  @CMakeFiles/main.dir/includes_C.rsp  -Wall -g -std=gnu11 -o CMakeFiles\\main.dir\\main.c.obj -c \"C:\\Users\\Drakendgarp\\Downloads\\New folder\\snake-game-raylib\\main.c\"",
+    "file": "C:/Users/Drakendgarp/Downloads/New folder/snake-game-raylib/main.c",
+    "output": "CMakeFiles/main.dir/main.c.obj"
+  }
+]

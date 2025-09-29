@@ -52,6 +52,7 @@ Mkfile.old
 dkms.conf
 include
 build-mingw
+lib 
 
 # debug information files
 *.dwo
