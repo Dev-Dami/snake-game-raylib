@@ -51,6 +51,7 @@ Module.symvers
 Mkfile.old
 dkms.conf
 include
+build-mingw
 
 # debug information files
 *.dwo
